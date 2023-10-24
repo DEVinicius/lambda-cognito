@@ -1,0 +1,18 @@
+service: cognito-manager
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+functions:
+  signUp:
+    handler: src/users/infra/http/controller/sign-up/index.handler
+    events: 
+      - httpApi:
+          method: post
+          path: /sign-up
