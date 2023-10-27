@@ -11,6 +11,7 @@ provider:
           Action:
             - cognitoIdp:signUp
             - cognitoIdp:confirmSignUp
+            - cognitoIdp:initiateAuth
           Resource: "*"
 
 plugins:
@@ -31,3 +32,10 @@ functions:
       - httpApi:
           method: post
           path: /confirm-sign-up
+
+  authenticate:
+    handler: src/users/infra/http/controller/auth/index.handler
+    events: 
+      - httpApi:
+          method: post
+          path: /auth

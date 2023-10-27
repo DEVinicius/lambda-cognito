@@ -1,4 +1,4 @@
-const { SignUpCommand, ConfirmSignUpCommand } = require("@aws-sdk/client-cognito-identity-provider")
+const { SignUpCommand, ConfirmSignUpCommand, InitiateAuthCommand } = require("@aws-sdk/client-cognito-identity-provider")
 
 class Manager {
     constructor({
@@ -42,6 +42,25 @@ class Manager {
         const response = await this.cognito.send(command)
 
         return response;
+    }
+
+    async authenticate(username, password) {
+        const params = {
+            ClientId: this.clientId,
+            AuthFlow: 'USER_PASSWORD_AUTH',
+            AuthParameters: {
+                USERNAME: username,
+                PASSWORD: password
+            },
+        }
+
+        const command = new InitiateAuthCommand(params);
+        const response = await this.cognito.send(command);
+
+        return {
+            token: response.AuthenticationResult.AccessToken,
+            tokenType: response.AuthenticationResult.TokenType
+        };
     }
 }
 
