@@ -4,6 +4,14 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs18.x
+  iam:
+    role: 
+      statements:
+        - Effect: Allow
+          Action:
+            - cognitoIdp:signUp
+            - cognitoIdp:confirmSignUp
+          Resource: "*"
 
 plugins:
   - serverless-offline
@@ -16,3 +24,10 @@ functions:
       - httpApi:
           method: post
           path: /sign-up
+
+  confirmSignUp:
+    handler: src/users/infra/http/controller/confirm-sign-up/index.handler
+    events: 
+      - httpApi:
+          method: post
+          path: /confirm-sign-up
