@@ -1,4 +1,4 @@
-const { factory } = require("../../../factory/sign-up.factory")
+const { factory } = require("../../../factory")
 
 async function handler(event) {
     try {
