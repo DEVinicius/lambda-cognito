@@ -1,24 +1,27 @@
+const { decoratorValidator } = require("../../../../../util")
 const { factory } = require("../../../factory")
+const { ConfirmSignUpValidator } = require("./validator")
 
-async function handler(event) {
-    try {
-        const { username, code } = JSON.parse(event.body)
-
-        const response = await factory.confirmAccount(username, code)
-
-        return {
-            statusCode: 200,
-            body: JSON.stringify(response)
-        }
-    } catch (error) {
-        console.log({error})
-        return {
-            statusCode: 400,
-            body: JSON.stringify(error)
+class ConfirmSignUp {
+    static async handler(event) {
+        try {
+            const { username, code } = event.body
+    
+            const response = await factory.confirmAccount(username, code)
+    
+            return {
+                statusCode: 200,
+                body: JSON.stringify(response)
+            }
+        } catch (error) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify(error)
+            }
         }
     }
 }
 
 module.exports = {
-    handler
+    handler: decoratorValidator(ConfirmSignUp.handler.bind(this), ConfirmSignUpValidator.validate(), 'body')
 }

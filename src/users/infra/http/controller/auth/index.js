@@ -1,24 +1,28 @@
+const decoratorValidator = require("../../../../../util/decoratorValidator")
 const { factory } = require("../../../factory")
+const { AuthValidator } = require("./validator")
 
-async function handler(event) {
-    try {
-        const { username, password } = JSON.parse(event.body)
-
-        const response = await factory.authenticate(username, password)
-
-        return {
-            statusCode: 200,
-            body: JSON.stringify(response)
-        }
-    } catch (error) {
-        console.log({error})
-        return {
-            statusCode: 400,
-            body: JSON.stringify(error)
+class Auth {
+    static async handler(event) {
+        try {
+            const { username, password } = event.body
+    
+            const response = await factory.authenticate(username, password)
+    
+            return {
+                statusCode: 200,
+                body: JSON.stringify(response)
+            }
+        } catch (error) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify(error)
+            }
         }
     }
 }
 
+
 module.exports = {
-    handler
+    handler: decoratorValidator(Auth.handler.bind(this), AuthValidator.validate(), 'body')
 }

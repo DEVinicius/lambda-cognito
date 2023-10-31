@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.433.0",
+    "joi": "^17.11.0",
     "nodemon": "^3.0.1",
     "serverless": "^3.36.0"
   },
